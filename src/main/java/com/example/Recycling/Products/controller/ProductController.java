@@ -1,6 +1,7 @@
 package com.example.Recycling.Products.controller;
 
 import com.example.Recycling.Products.repository.ProductRepo;
+import com.example.Recycling.Products.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.Recycling.Products.model.Product;
@@ -11,24 +12,32 @@ import java.util.List;
 @RequestMapping("/api")
 public class ProductController {
     @Autowired
-    ProductRepo productRepo;
+    ProductService productService;
 
     @PostMapping("/products")
-    public Product addProduct(@RequestBody Product product){
-        return productRepo.save(product);
+    public String addProduct(@RequestBody Product product){
+        return productService.add(product);
     }
 
     @GetMapping("/products")
     public List<Product> getAll(){
-        return productRepo.findAll();
+        return productService.getAll();
     }
 
-    @GetMapping("Products/{id}")
-    public Product getById(@PathVariable Integer id){
-        if (productRepo.findById(id).isPresent()) {
-            return productRepo.findById(id).get();
-        }
-        return null;
+    @GetMapping("/products/{id}")
+    public Product getById(@PathVariable Long id){
+            return productService.getById(id);
+    }
+
+    @PutMapping("/products")
+    public String update(@RequestBody Product product){
+        return productService.update(product);
+    }
+
+    @DeleteMapping("/products/{id}")
+    public String delete(@PathVariable Long id){
+        productService.delete(id);
+        return "Product Deleted";
     }
 
 

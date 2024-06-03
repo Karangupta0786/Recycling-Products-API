@@ -21,4 +21,5 @@ public class Product {
     private String location;
     private Long phone;
     private Double quantity;
+
 }
